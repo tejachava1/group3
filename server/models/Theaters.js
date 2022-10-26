@@ -6,6 +6,12 @@ const TheaterSchema = new mongoose.Schema({
   theaterLocation: {
     type: String,
   },
+  numberOfSeats: {
+    type: Number,
+  },
+  pricePerSeat: {
+    type: Number,
+  },
 });
 
 const Theater = mongoose.model("Theaters", TheaterSchema);

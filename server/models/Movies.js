@@ -14,10 +14,7 @@ const MovieSchema = new mongoose.Schema({
   },
   movieRating: {
     type: Number,
-  },
-  moviePrice: {
-    type: Number,
-  },
+  }
 });
 
 const Movie = mongoose.model("Movie", MovieSchema);

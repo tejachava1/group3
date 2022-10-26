@@ -10,7 +10,7 @@ const ScheduleRouter = require("./routes/schedule");
 const TicketRouter = require("./routes/ticket");
 const SeatRouter = require("./routes/seat");
 app.use(express.json());
-mongoose.connect("mongodb://localhost:27017/Movies", {
+mongoose.connect("mongodb://127.0.0.1:27017/Movies", {
   useNewUrlParser: true,
 });
 app.use(function (req, res, next) {

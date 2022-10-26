@@ -1,0 +1,60 @@
+.form-middle{
+    margin-left: 25%;
+    margin-top: 10%;
+    margin-right: 25%;
+    background: white;
+}
+
+.form-theater{
+    margin-left: 25% !important;
+    margin-top: 10% !important;
+    margin-right: 30%;
+    background: white;
+}
+
+.form-schedule{
+    margin-left: 25%;
+    margin-top: 10%;
+    margin-right: 25%;
+    background: white;
+}
+.float-right {
+    margin-left: auto;
+}
+
+.float {
+    float: right;
+}
+.legendTitle {
+    color: #1976d2;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.fieldset-Theater{
+    width: 100% !important;
+    margin-left: 18px !important;
+}
+.fieldset-schedule{
+    width: 95% !important;
+}
+
+.legendTitle-schedule {
+    color: #1976d2;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.error {
+    color: red;
+    font-size: 20px;
+    font-weight: bold; 
+}
+
+.tablemodel {
+    margin-left: 15%;
+    margin-top: 5%;
+    margin-right: 15%;
+    background: white;
+
+}

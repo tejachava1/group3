@@ -1,0 +1,26 @@
+.payment{
+    background: white;
+    margin-right: 25%;
+    margin-left: 25%;
+    /* height: 39%; */
+    /* max-height: 50%; */
+    width: 50%;
+    height: 250px;
+    margin-top: 5%;
+    border-radius: 8px;
+    border: 1px solid black;
+}
+
+.successIcon{
+    margin-right: 45%;
+    margin-left: 45%;
+    margin-top: 3%;
+    font-size: 47px !important;
+    color: #4BB543;
+}
+.displayBlock{
+    display: block;
+}
+.margin-left{
+    margin-left: 40%;
+}

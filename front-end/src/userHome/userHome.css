@@ -1,0 +1,23 @@
+.btn {
+    padding : 0rem;
+    font-size: 2rem;
+    background-color: white;
+    border-radius: 1rem;
+    width : 15rem;
+    height: 4rem;
+    background-color: indigo;
+    color : whitesmoke;
+    border : none;
+    cursor: pointer;
+}
+
+.userHome{    
+    position : absolute;
+    top : 30%;
+    left : 38%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap : 2rem;
+}

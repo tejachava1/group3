@@ -5,6 +5,9 @@ const ScheduleSchema = new mongoose.Schema({
   date: {
     type: Date,
   },
+  Id: {
+    type: Number,
+  },
   movieId: {
     type: Schema.Types.ObjectId,
     ref: "Movie",
@@ -13,11 +16,11 @@ const ScheduleSchema = new mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: "Theater",
   },
-  seatAvailable: {
-    type: Number,
+  timeSlot: {
+    type : "String",
   },
-  time: {
-    type: String,
+  day: {
+    type : "String",
   },
 });
 const Schedule = mongoose.model("Schedule", ScheduleSchema);

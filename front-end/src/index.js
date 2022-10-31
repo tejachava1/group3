@@ -19,6 +19,7 @@ import Schedule from "./adminDashboard/Schedule";
 import Payment from "./userDashboard/payment";
 import SeatBooking from "./userDashboard/seat";
 import Invoice from "./userDashboard/invoice";
+import MyBookings from "./userDashboard/myBookings";
 
 import reportWebVitals from "./reportWebVitals";
 import {
@@ -50,6 +51,7 @@ root.render(
         <Route path="/Payment" element={<Payment />} />
         <Route path="/Seatbooking" element={<SeatBooking />} />
         <Route path="/Invoice" element={<Invoice />} />
+        <Route path="/Mybooking" element={<MyBookings />} />
       </Routes>
     </Router>
   </React.StrictMode>

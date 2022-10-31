@@ -27,6 +27,8 @@ function AddSchedule(props) {
   const [theaters, setTheaters] = useState([]);
   const [day, setDay] = useState("");
   const [movie, setMovie] = useState("");
+  const [timeSlot, setTimeSlot] = useState("");
+
   const [theater, setTheater] = useState("");
   const [seats, setSeats] = useState(0);
   const [time, setTime] = useState("");
@@ -34,12 +36,16 @@ function AddSchedule(props) {
   const [error, setError] = useState("");
   const [updateTure, setUpdateTrue] = useState(false);
   const [scheduleId, setScheduleId] = useState(0);
-  console.log(updateSchedule);
+  const [timeSlots, setTimeSlots] = useState([
+    { id: 1, timeSlot: "11:30" },
+    { id: 2, timeSlot: "2:10" },
+    { id: 3, timeSlot: "6:00" },
+  ]);
   useEffect(() => {
     if (updateSchedule.state && updateSchedule.state.edit) {
       setUpdateTrue(true);
       setScheduleId(updateSchedule.state.scheduleId);
-      setTime(updateSchedule.state.time);
+      setTimeSlot(updateSchedule.state.timeSlot);
       setDate(
         moment(updateSchedule.state.date).add(1, "days").format("YYYY-MM-DD")
       );
@@ -52,14 +58,12 @@ function AddSchedule(props) {
   useEffect(() => {
     Axios.get("http://localhost:3001/movies")
       .then((response) => {
-        console.log(response.data);
         setMovies(response.data);
       })
       .catch((error) => {});
 
     Axios.get("http://localhost:3001/theaters")
       .then((response) => {
-        console.log(response.data);
         setTheaters(response.data);
       })
       .catch((error) => {});
@@ -87,11 +91,10 @@ function AddSchedule(props) {
     let schedule = {
       movieId: movie,
       theaterId: theater,
-      time: time,
+      timeSlot: timeSlot,
       seatAvailable: seats,
       date: date,
     };
-    console.log(schedule);
     event.preventDefault();
 
     Axios.post("http://localhost:3001/schedules", schedule)
@@ -103,12 +106,11 @@ function AddSchedule(props) {
           setDate("");
           setMovie("");
           setTheater("");
-          setTime("");
+          setTimeSlot("");
           setSeats(0);
         }
       })
       .catch((error) => {
-        console.log(error.message);
         setError(error.message);
         // handleClickError();
       });
@@ -118,8 +120,10 @@ function AddSchedule(props) {
     setDay(event.target.value);
   };
   const handleChangeMovie = (event) => {
-    console.log(event.target.value);
     setMovie(event.target.value);
+  };
+  const handleChangeTimeSlot = (event) => {
+    setTimeSlot(event.target.value);
   };
   const handleChangeTheater = (event) => {
     setTheater(event.target.value);
@@ -133,18 +137,13 @@ function AddSchedule(props) {
   const handleInputChangeDate = (event) => {
     let datetosting = new Date(event.target.value);
     setDate(event.target.value);
-    console.log(datetosting);
   };
 
   const handleUpdate = (event) => {
     let schedule = {
       movieId: movie,
       theaterId: theater,
-      time: time,
-      seatAvailable: seats,
-      date: date,
     };
-    console.log(schedule);
     Axios.put("http://localhost:3001/schedules/" + scheduleId, schedule).then(
       (response) => {
         if (response.status == 201) {
@@ -257,7 +256,7 @@ function AddSchedule(props) {
                             </div> */}
               </Grid>
               <Grid item md={6}>
-                <div>
+                {/* <div>
                   <TextField
                     required
                     id="outlined-required"
@@ -265,22 +264,32 @@ function AddSchedule(props) {
                     value={seats}
                     onChange={handleInputChange}
                   />
+                </div> */}
+
+                <div>
+                  <FormControl variant="standard" sx={{ m: 1, minWidth: 180 }}>
+                    <InputLabel id="movie-label">Time Slot</InputLabel>
+                    <Select
+                      labelId="movie-label"
+                      id="time-slot"
+                      value={timeSlot}
+                      onChange={handleChangeTimeSlot}
+                      label="Time Slot"
+                    >
+                      <MenuItem value="">
+                        <em>None</em>
+                      </MenuItem>
+
+                      {timeSlots.map((slot, index) => (
+                        <MenuItem key={index} value={slot.timeSlot}>
+                          {" "}
+                          {slot.timeSlot}{" "}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
                 </div>
 
-                <TextField
-                  id="time"
-                  label="Movie Time"
-                  type="time"
-                  value={time}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  inputProps={{
-                    step: 300, // 5 min
-                  }}
-                  sx={{ width: 150 }}
-                  onChange={handleInputChangeTime}
-                />
                 {updateTure ? (
                   <Button
                     className="float"

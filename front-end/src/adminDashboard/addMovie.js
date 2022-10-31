@@ -19,7 +19,6 @@ function AddMovie(props) {
 
   useEffect(() => {
     if (updateMovie.state && updateMovie.state.edit) {
-      console.log(updateMovie.state);
       setUpdateTrue(true);
       setMovieId(updateMovie.state._id);
       setMovieForm({
@@ -27,7 +26,6 @@ function AddMovie(props) {
         movieDescription: updateMovie.state.movieDescription,
         movieDirector: updateMovie.state.movieDirector,
         movieRating: updateMovie.state.movieRating,
-        moviePrice: updateMovie.state.moviePrice,
       });
     } else {
       setMovieForm({
@@ -35,7 +33,6 @@ function AddMovie(props) {
         movieDescription: "",
         movieDirector: "",
         movieRating: 0,
-        moviePrice: 0,
       });
     }
   }, [updateMovie]);
@@ -45,7 +42,6 @@ function AddMovie(props) {
     movieDescription: "",
     movieDirector: "",
     movieRating: 0,
-    moviePrice: 0,
   });
   const handleInputChange = (e) => {
     // debugger
@@ -74,7 +70,6 @@ function AddMovie(props) {
       movieDescription: "",
       movieDirector: "",
       movieRating: 0,
-      moviePrice: 0,
     });
     navigate("/Movies");
   };
@@ -91,12 +86,10 @@ function AddMovie(props) {
             movieDescription: "",
             movieDirector: "",
             movieRating: 0,
-            moviePrice: 0,
           });
         }
       })
       .catch((error) => {
-        console.log(error);
         handleClickError();
       });
   };
@@ -109,7 +102,6 @@ function AddMovie(props) {
       movieDescription: movieForm.movieDescription,
       movieDirector: movieForm.movieDirector,
       movieRating: movieForm.movieRating,
-      moviePrice: movieForm.moviePrice,
     };
 
     Axios.put("http://localhost:3001/movies/" + movieId, updateMovie)
@@ -119,15 +111,12 @@ function AddMovie(props) {
         }
       })
       .catch((error) => {
-        console.log(error);
         handleClickError();
       });
   };
 
   const [open, setOpen] = React.useState(false);
   const [errorOpen, setErrorOpen] = React.useState(false);
-  const [vertical, setVertical] = React.useState("top");
-  const [horizontal, setHorizontal] = React.useState("right");
 
   const handleClick = () => {
     setOpen(true);
@@ -223,17 +212,7 @@ function AddMovie(props) {
                     onChange={handleInputChange}
                   />
                 </div>
-                <div>
-                  <TextField
-                    required
-                    id="outlined-required"
-                    label="Price"
-                    name="moviePrice"
-                    type="number"
-                    value={movieForm.moviePrice}
-                    onChange={handleInputChange}
-                  />
-                </div>
+
                 {updateTure ? (
                   <Button
                     className="float"

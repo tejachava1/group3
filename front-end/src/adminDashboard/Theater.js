@@ -24,7 +24,6 @@ function Theater(props) {
     axios
       .get("http://localhost:3001/theaters")
       .then((response) => {
-        console.log(response.data);
         setTheaters(response.data);
       })
       .catch((error) => {});
@@ -59,9 +58,10 @@ function Theater(props) {
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell>Theater Id</TableCell>
                 <TableCell>Theater Name</TableCell>
                 <TableCell align="left">Theater Location</TableCell>
+                <TableCell align="left">Number Of seats</TableCell>
+                <TableCell align="left">Price per seat</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -71,12 +71,11 @@ function Theater(props) {
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   onClick={() => editTheater(theater)}
                 >
-                  <TableCell component="th" scope="movie">
-                    {theater._id}
-                  </TableCell>
                   <TableCell align="left">{theater.theaterName}</TableCell>
 
                   <TableCell align="left">{theater.theaterLocation}</TableCell>
+                  <TableCell align="left">{theater.numberOfSeats}</TableCell>
+                  <TableCell align="left">{theater.pricePerSeat}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

@@ -24,13 +24,11 @@ function AdminLogin() {
     Axios.post(`http://localhost:3001/adminLogin`, values)
       .then((response) => {
         debugger;
-        console.log(response);
         // navigate('/addSchedule', { state: data });
         navigate("/Movies", { state: response.data });
       })
       .catch((error) => {
         if (error) {
-          console.log(error);
           setError(true);
           // setErrorMessage(error.response.data.message);
         }

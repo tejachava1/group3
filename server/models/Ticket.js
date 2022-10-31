@@ -12,8 +12,16 @@ const TicketSchema = new mongoose.Schema({
   price: {
     type: Number,
   },
+  status: {
+    type: String,
+  },
   userId: {
     type: Schema.Types.ObjectId,
     ref: "Users",
   },
+  seatNumber: {
+    type: Number,
+  },
 });
+const Ticket = mongoose.model("Ticket", TicketSchema);
+module.exports = Ticket;

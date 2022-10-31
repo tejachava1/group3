@@ -29,75 +29,100 @@ function UserDashboard(props) {
   const [vertical, setVertical] = React.useState("top");
   const [horizontal, setHorizontal] = React.useState("right");
   const [scheduleTime, setScheduleTime] = useState({});
+  const [timeSlot, setTimeSlot] = useState({});
+  const [timeSlots, setTimeSlots] = useState([]);
   const [seatsSelected, setSeatsSelected] = useState(0);
   const [theater, setTheater] = useState({});
   const [user_id, setUser_id] = useState(0);
   const [userName, setUserName] = useState("");
+  const [currentBookedTickets, setCurrentBookedTickets] = useState([]);
   useEffect(() => {
-    console.log(userData);
-    debugger;
     if (userData.state !== null) {
       setUser_id(userData.state._id);
       setUserName(userData.state.name);
+      localStorage.setItem("userData", JSON.stringify(userData.state));
     }
   }, [userData]);
   useEffect(() => {
     axios
       .get("http://localhost:3001/schedules")
       .then((response) => {
-        console.log(response.data);
         setSchedules(response.data);
       })
       .catch((error) => {});
     axios
       .get("http://localhost:3001/movies")
       .then((response) => {
-        console.log(response.data);
         setMovies(response.data);
       })
       .catch((error) => {});
     axios
       .get("http://localhost:3001/theaters")
       .then((response) => {
-        console.log(response.data);
         setTheaters(response.data);
       })
       .catch((error) => {});
   }, []);
 
   const handleInputChange = (e) => {
-    console.log(movie);
     setSeatsSelected(e.target.value);
-    let price = movie.moviePrice * e.target.value;
+    let price = theater.pricePerSeat * e.target.value;
     setCalPrice(price);
   };
 
   const handleCancel = (event) => {};
+
+  let moviedata = {
+    movieName: movie.movieName,
+    theaterName: theater.theaterName,
+    location: theater.theaterLocation,
+  };
+  let seats = +seatsSelected;
+  let theaterData = {
+    theaterLocation: theater.theaterLocation,
+    theaterName: theater.theaterName,
+    numberOfSeats: theater.numberOfSeats - seats,
+    pricePerSeat: theater.pricePerSeat,
+    ticketsBooked: theater.ticketsBooked + seats,
+  };
   const handleSubmit = (event) => {
     event.preventDefault();
-    let data = {
-      scheduleId: scheduleTime._id,
-      price: calPrice,
-      noOfSeats: seatsSelected,
-      userId: user_id,
-    };
-    let moviedata = {
-      movieName: movie.movieName,
-      theaterName: theater.theaterName,
-      location: theater.theaterLocation,
-    };
-    console.log(data);
-    // axios
-    //   .post("http://localhost:3001/ticket", data)
-    //   .then((response) => {
-    //     if (response.status == 201) {
-    //       navigate("/Payment", { state: moviedata });
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //     handleClickError();
-    //   });
+    let ticketsData = [];
+    let ticketsResponse = [];
+    let seats = +seatsSelected;
+    if (seats >= 1) {
+      for (var i = 0; i < seats; i++) {
+        let data = {
+          scheduleId: scheduleTime._id,
+          price: calPrice,
+          noOfSeats: +seatsSelected,
+          userId: user_id,
+          seatNumber: theater.ticketsBooked + i + 1,
+          status: "confirmed",
+        };
+        ticketsData.push(data);
+      }
+    }
+    if (ticketsData.length > 0) {
+      for (var i = 0; i < ticketsData.length; i++) {
+        axios
+          .post("http://localhost:3001/ticket", ticketsData[i])
+          .then((response) => {
+            if (response.status == 201) {
+              ticketsResponse.push(response.data);
+              // navigate("/Payment", { state: moviedata });
+            }
+          })
+          .catch((error) => {
+            handleClickError();
+          });
+      }
+      axios
+        .put(`http://localhost:3001/theaters/${theater._id}`, theaterData)
+        .then((response) => {
+          navigate("/Payment", { state: ticketsResponse });
+        });
+    }
   };
 
   const handleClick = () => {
@@ -124,9 +149,8 @@ function UserDashboard(props) {
   let moviesselctions = null;
   useEffect(() => {
     if (movie && theater) {
-      console.log(movie);
-      console.log(schedules);
       let movieSchedule = [];
+      let timeSlots = [];
       for (var i = 0; i <= schedules.length; i++) {
         if (
           movie._id === schedules[i]?.movieId &&
@@ -140,24 +164,56 @@ function UserDashboard(props) {
   }, [movie && theater]);
 
   useEffect(() => {
-    console.log(movieSchedules);
+    if (movie && theater && scheduleTime) {
+      let timeSlots = [];
+      for (var i = 0; i <= schedules.length; i++) {
+        if (
+          movie._id === schedules[i]?.movieId &&
+          theater._id === schedules[i]?.theaterId &&
+          schedules[i]?.date === scheduleTime.date
+        ) {
+          timeSlots.push(schedules[i]);
+        }
+      }
+      setTimeSlots(timeSlots);
+    }
+  }, [movie && theater && scheduleTime]);
+
+  useEffect(() => {
     if (movieSchedules.length > 0) {
+      debugger;
+      localStorage.setItem("movieSchedules", JSON.stringify(movieSchedules));
+
       returnMenu(movieSchedules);
     }
   }, [movieSchedules]);
 
+  useEffect(() => {
+    if (timeSlots.length > 0) {
+      returnMenu(timeSlots);
+    }
+  }, [timeSlots]);
+
+  const returnslotMenu = (schedules) => {
+    return schedules.map((schedule, index) => (
+      <MenuItem key={index} value={schedule}>
+        {schedule?.timeSlot}
+      </MenuItem>
+    ));
+  };
   const returnMenu = (schedules) => {
-    console.log(schedules[0]?.time);
     return schedules.map((schedule, index) => (
       <MenuItem key={index} value={schedule}>
         {/* {schedule?.time} */}
-        {moment(schedule?.date).format("DD-MM-YYYY")}-{schedule?.time}
+        {moment(schedules.date).add(0, "days").format("MM-DD-YYYY")}
       </MenuItem>
     ));
   };
   const handleChangeTime = (event) => {
-    console.log(event.target.value);
     setScheduleTime(event.target.value);
+  };
+  const handleChangeTimeSlot = (event) => {
+    setTimeSlot(event.target.value);
   };
   return (
     <div>
@@ -239,9 +295,7 @@ function UserDashboard(props) {
                 </div>
                 <div className="">
                   <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
-                    <InputLabel id="theater-label">
-                      Select movie schedule
-                    </InputLabel>
+                    <InputLabel id="theater-label">Date</InputLabel>
 
                     <Select
                       labelId="theater-label"
@@ -255,6 +309,25 @@ function UserDashboard(props) {
                       </MenuItem>
 
                       {returnMenu(movieSchedules)}
+                    </Select>
+                  </FormControl>
+                </div>
+                <div className="">
+                  <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
+                    <InputLabel id="theater-label">Time Slot</InputLabel>
+
+                    <Select
+                      labelId="theater-label"
+                      id="theater_id"
+                      label="Theater"
+                      value={timeSlot}
+                      onChange={handleChangeTimeSlot}
+                    >
+                      <MenuItem value="">
+                        <em>None</em>
+                      </MenuItem>
+
+                      {returnslotMenu(timeSlots)}
                     </Select>
                   </FormControl>
                 </div>

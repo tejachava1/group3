@@ -24,7 +24,6 @@ function Movie(props) {
     axios
       .get("http://localhost:3001/movies")
       .then((response) => {
-        console.log(response.data);
         setMovies(response.data);
       })
       .catch((error) => {});
@@ -63,7 +62,6 @@ function Movie(props) {
                 <TableCell align="left">Description</TableCell>
                 <TableCell align="left">Driector</TableCell>
                 <TableCell align="left">Rating&nbsp;</TableCell>
-                <TableCell align="left">Price&nbsp;($)</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -79,7 +77,6 @@ function Movie(props) {
                   <TableCell align="left">{movie.movieDescription}</TableCell>
                   <TableCell align="left">{movie.movieDirector}</TableCell>
                   <TableCell align="left">{movie.movieRating}</TableCell>
-                  <TableCell align="left">{movie.moviePrice}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

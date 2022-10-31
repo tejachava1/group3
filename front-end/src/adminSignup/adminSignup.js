@@ -23,15 +23,9 @@ function AdminSignup() {
   const signup = () => {
     if (values.password === confirmPassword) {
       Axios.post("http://localhost:3001/admin", values)
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+        .then((response) => {})
+        .catch((error) => {});
     }
-
-    console.log("signup");
   };
   return (
     <div>

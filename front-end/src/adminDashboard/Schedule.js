@@ -57,17 +57,15 @@ function Schedule(props) {
               movieName: "",
               theaterName: "",
               scheduleId: 0,
-              seatAvailable: 0,
               theaterId: 0,
-              time: "",
+              timeSlot: "",
             };
             schedulenew.date = schedules[i]?.date;
-            schedulenew.time = schedules[i]?.time;
             schedulenew.movieId = schedules[i]?.movieId;
             schedulenew.movieName = movies[j]?.movieName;
             schedulenew.theaterId = schedules[i]?.theaterId;
             schedulenew.scheduleId = schedules[i]?._id;
-            schedulenew.seatAvailable = schedules[i]?.seatAvailable;
+            schedulenew.timeSlot = schedules[i]?.timeSlot;
           }
         }
 
@@ -82,7 +80,6 @@ function Schedule(props) {
     }
   }, [schedules && movies && theaters]);
   const editMovie = (schedule) => {
-    console.log(schedule);
     let data = {
       ...schedule,
       edit: true,
@@ -114,8 +111,7 @@ function Schedule(props) {
                 <TableCell>Movie Name</TableCell>
                 <TableCell align="left">Theater Name</TableCell>
                 <TableCell align="left">Date</TableCell>
-                <TableCell align="left">Time&nbsp;</TableCell>
-                <TableCell align="left">Seats Available&nbsp;</TableCell>
+                <TableCell align="left">Time slot&nbsp;</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -132,8 +128,7 @@ function Schedule(props) {
                   <TableCell align="left">
                     {moment(movie.date).add(1, "days").format("MM-DD-YYYY")}
                   </TableCell>
-                  <TableCell align="left">{movie.time}</TableCell>
-                  <TableCell align="left">{movie.seatAvailable}</TableCell>
+                  <TableCell align="left">{movie.timeSlot}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

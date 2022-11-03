@@ -208,6 +208,7 @@ function AddMovie(props) {
                     label="Movie Rating"
                     name="movieRating"
                     type="number"
+                    onInput={(e) => {(e.target).value = Math.max(0, parseInt((e.target).value)).toString().slice(0, 12)}}
                     value={movieForm.movieRating}
                     onChange={handleInputChange}
                   />

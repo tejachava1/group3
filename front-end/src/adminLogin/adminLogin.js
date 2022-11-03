@@ -53,6 +53,7 @@ function AdminLogin() {
           <TextField
             id="standard-basic"
             label="password"
+            type="password"
             variant="standard"
             value={values.password}
             onChange={handleChange("password")}

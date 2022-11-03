@@ -11,7 +11,8 @@ function UserSignup() {
     phoneNumber: "",
     password: "",
   });
-
+  const [errorText, setErrorText] = useState('');
+  const [errorTrue, setErrorTrue] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleChange = (prop) => (event) => {
@@ -29,6 +30,10 @@ function UserSignup() {
         .catch((error) => {
           console.log(error);
         });
+    }
+    else {
+      setErrorText('Password confiramtion does not match');
+      setErrorTrue(true);
     }
 
     console.log("signup");
@@ -59,6 +64,7 @@ function UserSignup() {
           <TextField
             id="standard-basic"
             label="Password"
+            type="password"
             variant="standard"
             value={values.password}
             onChange={handleChange("password")}
@@ -66,11 +72,14 @@ function UserSignup() {
         </div>
         <div>
           <TextField
+           error ={errorTrue}
             id="standard-basic"
-            label="Password"
+            label="Confirm Password"
+            type="password"
             variant="standard"
             value={confirmPassword}
             onChange={handleChangeConfirmPassword}
+            helperText={errorText}
           />
         </div>
         <div>

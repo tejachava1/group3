@@ -12,6 +12,19 @@ router.post("/ticket", async (req, res) => {
     res.status(400).send(e);
   }
 });
+router.put("/ticket/:id", async (req, res) => {
+  const _id = req.params.id;
+  const updates = Object.keys(req.body);
+
+  try {
+    const ticket = await Ticket.findById(_id);
+    updates.forEach((update) => (ticket[update] = req.body[update]));
+    await ticket.save();
+    return !ticket ? res.sendStatus(404) : res.status(201).send(ticket);
+  } catch (e) {
+    return res.status(400).send(e);
+  }
+});
 router.get("/ticket/:userId", async (req, res)=> {
   const userId = req.params.userId;
   try {

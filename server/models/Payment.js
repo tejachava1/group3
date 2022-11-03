@@ -6,11 +6,14 @@ const PaymentSchema = new mongoose.Schema({
  Id: {
   type: Number,
  },
-  ticketId: {
+  userId: {
     type: Schema.Types.ObjectId,
-    ref: "Ticket",
+    ref: "Users",
   },
   totalAmount: {
+    type: Number,
+  },
+  refundedAmount: {
     type: Number,
   },
   date: {

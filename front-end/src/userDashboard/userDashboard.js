@@ -33,16 +33,17 @@ function UserDashboard(props) {
   const [timeSlots, setTimeSlots] = useState([]);
   const [seatsSelected, setSeatsSelected] = useState(0);
   const [theater, setTheater] = useState({});
-  const [user_id, setUser_id] = useState(0);
+  const [user_id, setUser_id] = useState('');
   const [userName, setUserName] = useState("");
   const [currentBookedTickets, setCurrentBookedTickets] = useState([]);
-  useEffect(() => {
-    if (userData.state !== null) {
-      setUser_id(userData.state._id);
-      setUserName(userData.state.name);
-      localStorage.setItem("userData", JSON.stringify(userData.state));
-    }
-  }, [userData]);
+  // useEffect(() => {
+
+  //   if (userData.state !== null) {
+  //     setUser_id(userData.state._id);
+  //     setUserName(userData.state.name);
+  //     localStorage.setItem("userData", JSON.stringify(userData.state));
+  //   }
+  // }, [userData]);
   useEffect(() => {
     axios
       .get("http://localhost:3001/schedules")
@@ -62,6 +63,10 @@ function UserDashboard(props) {
         setTheaters(response.data);
       })
       .catch((error) => {});
+      let userData = JSON.parse(localStorage.getItem("userData"));
+      setUser_id(userData._id);
+      setUserName(userData.name);
+
   }, []);
 
   const handleInputChange = (e) => {
@@ -81,7 +86,7 @@ function UserDashboard(props) {
   let theaterData = {
     theaterLocation: theater.theaterLocation,
     theaterName: theater.theaterName,
-    numberOfSeats: theater.numberOfSeats - seats,
+    numberOfSeats: theater.numberOfSeats -seats,
     pricePerSeat: theater.pricePerSeat,
     ticketsBooked: theater.ticketsBooked + seats,
   };
@@ -104,24 +109,24 @@ function UserDashboard(props) {
       }
     }
     if (ticketsData.length > 0) {
-      for (var i = 0; i < ticketsData.length; i++) {
-        axios
-          .post("http://localhost:3001/ticket", ticketsData[i])
-          .then((response) => {
-            if (response.status == 201) {
-              ticketsResponse.push(response.data);
-              // navigate("/Payment", { state: moviedata });
-            }
-          })
-          .catch((error) => {
-            handleClickError();
-          });
-      }
-      axios
-        .put(`http://localhost:3001/theaters/${theater._id}`, theaterData)
-        .then((response) => {
-          navigate("/Payment", { state: ticketsResponse });
-        });
+      // for (var i = 0; i < ticketsData.length; i++) {
+      //   axios
+      //     .post("http://localhost:3001/ticket", ticketsData[i])
+      //     .then((response) => {
+      //       if (response.status == 201) {
+      //         ticketsResponse.push(response.data);
+      //         // navigate("/Payment", { state: moviedata });
+      //       }
+      //     })
+      //     .catch((error) => {
+      //       handleClickError();
+      //     });
+      // }
+      // axios
+      //   .put(`http://localhost:3001/theaters/${theater._id}`, theaterData)
+      //   .then((response) => {
+          navigate("/Payment", { state: ticketsData });
+        // });
     }
   };
 
@@ -203,9 +208,9 @@ function UserDashboard(props) {
   };
   const returnMenu = (schedules) => {
     return schedules.map((schedule, index) => (
+      
       <MenuItem key={index} value={schedule}>
-        {/* {schedule?.time} */}
-        {moment(schedules.date).add(0, "days").format("MM-DD-YYYY")}
+        {schedule?.date.slice(0, schedule?.date.length-14)}
       </MenuItem>
     ));
   };

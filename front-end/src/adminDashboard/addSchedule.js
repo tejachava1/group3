@@ -37,9 +37,10 @@ function AddSchedule(props) {
   const [updateTure, setUpdateTrue] = useState(false);
   const [scheduleId, setScheduleId] = useState(0);
   const [timeSlots, setTimeSlots] = useState([
-    { id: 1, timeSlot: "11:30" },
-    { id: 2, timeSlot: "2:10" },
-    { id: 3, timeSlot: "6:00" },
+    { id: 1, timeSlot: "11:30 am" },
+    { id: 2, timeSlot: "2:10 pm" },
+    { id: 3, timeSlot: "6:00 pm" },
+    { id: 4, timeSlot: "9:30 pm" },
   ]);
   useEffect(() => {
     if (updateSchedule.state && updateSchedule.state.edit) {

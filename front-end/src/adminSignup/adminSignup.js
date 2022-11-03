@@ -11,6 +11,8 @@ function AdminSignup() {
     phoneNumber: "",
     password: "",
   });
+  const [errorText, setErrorText] = useState('');
+  const [errorTrue, setErrorTrue] = useState(false);
 
   const [confirmPassword, setConfirmPassword] = useState("");
 
@@ -25,6 +27,9 @@ function AdminSignup() {
       Axios.post("http://localhost:3001/admin", values)
         .then((response) => {})
         .catch((error) => {});
+    } else {
+      setErrorText('Password confiramtion does not match');
+      setErrorTrue(true);
     }
   };
   return (
@@ -53,6 +58,7 @@ function AdminSignup() {
           <TextField
             id="standard-basic"
             label="Password"
+            type="password"
             variant="standard"
             value={values.password}
             onChange={handleChange("password")}
@@ -60,11 +66,14 @@ function AdminSignup() {
         </div>
         <div>
           <TextField
+            error ={errorTrue}
             id="standard-basic"
-            label="Password"
+            label="Confirm Password"
+            type="password"
             variant="standard"
             value={confirmPassword}
             onChange={handleChangeConfirmPassword}
+            helperText={errorText}
           />
         </div>
         <div>

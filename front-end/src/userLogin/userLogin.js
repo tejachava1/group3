@@ -56,6 +56,7 @@ function UserLogin() {
             label="password"
             variant="standard"
             value={values.password}
+            type="password"
             onChange={handleChange("password")}
           />
         </div>

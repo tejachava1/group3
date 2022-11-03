@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import Grid from "@mui/material/Grid";
+import Button from '@mui/material/Button';
 
 import Header from "../Header/header";
 import Card from "@mui/material/Card";
@@ -23,19 +24,19 @@ function MyBookings(props) {
       .then((response) => {
         setSchedules(response.data);
       })
-      .catch((error) => {});
+      .catch((error) => { });
     axios
       .get("http://localhost:3001/movies")
       .then((response) => {
         setMovies(response.data);
       })
-      .catch((error) => {});
+      .catch((error) => { });
     axios
       .get("http://localhost:3001/theaters")
       .then((response) => {
         setTheaters(response.data);
       })
-      .catch((error) => {});
+      .catch((error) => { });
   }, []);
   useEffect(() => {
     if (tickets.length > 0) {
@@ -96,6 +97,12 @@ function MyBookings(props) {
                   <p>Seat Number: {data.seatNumber}</p>
                   <p>Status:{data.status}</p>
                 </CardContent>
+                <CardActions>
+                  <Button variant="outlined" onClick={() => {
+                    alert('clicked');
+                  }}>Cancel Booking</Button>
+                </CardActions>
+
               </Card>
             </Grid>
           ))}

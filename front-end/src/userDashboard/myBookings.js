@@ -16,9 +16,40 @@ function MyBookings(props) {
   const [theaters, setTheaters] = useState([]);
   const [schedules, setSchedules] = useState([]);
   const [newTickets, setNewTickets] = useState([]);
+  const cancelTicket = (data) => {
+    console.log(data)
+    let theaterData = {
+      theaterLocation: data.theaterLocation,
+      theaterName: data.theaterName,
+      numberOfSeats: data.numberOfSeats+1,
+      pricePerSeat: data.pricePerSeat,
+      ticketsBooked: data.ticketsBooked - 1
+    }
+
+    let ticketData ={
+      scheduleId: data.scheduleId,
+      price: data.price,
+      noOfSeats: data.noOfSeats - 1,
+      userId: data.userId,
+      seatNumber: 0,
+      status: "cancelled",
+    }
+console.log(theaterData)
+console.log(ticketData)
+console.log(data)
+    axios
+    .put(`http://localhost:3001/ticket/${data._id}`, ticketData)
+    .then((response) => {
+    });
+
+    axios
+    .put(`http://localhost:3001/theaters/${data.theaterId}`, theaterData)
+    .then((response) => {
+    });
+
+  }
   useEffect(() => {
     setUserData(JSON.parse(localStorage.getItem("userData")));
-    console.log(JSON.parse(localStorage.getItem("userData")));
     axios
       .get("http://localhost:3001/schedules")
       .then((response) => {
@@ -46,18 +77,25 @@ function MyBookings(props) {
   }, [tickets]);
 
   const getNewTickets = (movies, theaters, schedules) => {
-    for (var i = 0; i <= tickets.length - 1; i++) {
-      for (var j = 0; j <= tickets.length - 1; j++) {
+    console.log(schedules)
+    for (var i = 0; i <= tickets.length-1; i++) {
+      for (var j = 0; j <= tickets.length-1; j++) {
         if (tickets[i].scheduleId === schedules[j]?._id) {
           for (var k = 0; k < tickets.length - 1; k++) {
             if (movies[k]?._id === schedules[j].movieId) {
               tickets[i].movieName = movies[k].movieName;
+              tickets[i].movieId = movies[k]._id
             }
           }
-          for (var l = 0; l < tickets.length - 1; l++) {
+          for (var l = 0; l < tickets.length-1; l++) {
             if (theaters[l]?._id === schedules[j].theaterId) {
               tickets[i].theaterName = theaters[l].theaterName;
               tickets[i].theaterLocation = theaters[l].theaterLocation;
+              tickets[i].theaterId = theaters[l]._id;
+              tickets[i].ticketsBooked = theaters[l].ticketsBooked;
+              tickets[i].pricePerSeat = theaters[l].pricePerSeat;
+              tickets[i].numberOfSeats = theaters[l].numberOfSeats
+
             }
           }
         }
@@ -72,7 +110,6 @@ function MyBookings(props) {
     }
   }, [movies && theaters && schedules]);
   useEffect(() => {
-    debugger;
     if (userData !== null && userData !== {} && userData._id) {
       axios
         .get(`http://localhost:3001/ticket/${userData._id}`)
@@ -98,9 +135,13 @@ function MyBookings(props) {
                   <p>Status:{data.status}</p>
                 </CardContent>
                 <CardActions>
-                  <Button variant="outlined" onClick={() => {
-                    alert('clicked');
-                  }}>Cancel Booking</Button>
+                  {
+                    data.status === 'confirmed' ?
+                    <Button variant="outlined" onClick={() => {cancelTicket(data)
+                    }}>Cancel Booking</Button>
+                    : ''
+                  }
+                  
                 </CardActions>
 
               </Card>

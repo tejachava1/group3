@@ -25,6 +25,7 @@ function UserLogin() {
       .then((response) => {
         console.log(response);
         // navigate('/addSchedule', { state: data });
+        localStorage.setItem("userData", JSON.stringify(response.data));
         navigate("/userDashboard", { state: response.data });
       })
       .catch((error) => {

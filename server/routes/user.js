@@ -27,7 +27,6 @@ router.post("/user", async (req, res) => {
 router.post("/userLogin", async (req, res) => {
   const user = req.body;
   const { emailId, password } = req.body;
-  console.log(user);
 
   try {
     let userEmail = await User.findOne({ emailId });

@@ -6,7 +6,7 @@ const TicketSchema = new mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: "Schedule",
   },
-  noOfSeats: {
+  noOfSeats_ticket: {
     type: Number,
   },
   price: {
@@ -21,6 +21,12 @@ const TicketSchema = new mongoose.Schema({
   },
   seatNumber: {
     type: Number,
+  },
+  bookingReference: {
+    type: String,
+  },
+  seatPosition: {
+    type: String,
   },
 });
 const Ticket = mongoose.model("Ticket", TicketSchema);

@@ -1,0 +1,13 @@
+.ticket-grid{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.ticket-column{
+    border: 1px solid red;
+    margin-right: 30px;
+    margin-bottom: 10px;
+}
+.payment{
+    margin-left: 35%;
+}

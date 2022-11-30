@@ -36,4 +36,14 @@ router.get("/ticket/:userId", async (req, res)=> {
 })
 
 
+router.get("/ticket/:userId", async (req, res) => {
+  const userId = req.params.userId;
+  try {
+    const tickets = await Ticket.find({ userId: userId });
+    res.status(201).send(tickets);
+  } catch (e) {
+    res.status(400).send(e);
+  }
+});
+
 module.exports = router;

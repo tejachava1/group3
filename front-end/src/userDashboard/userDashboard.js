@@ -13,6 +13,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import moment from "moment";
+import uuid from "react-uuid";
 import { useId } from "react";
 
 function UserDashboard(props) {
@@ -30,12 +31,14 @@ function UserDashboard(props) {
   const [horizontal, setHorizontal] = React.useState("right");
   const [scheduleTime, setScheduleTime] = useState({});
   const [timeSlot, setTimeSlot] = useState({});
+  const [schedule, setSchedule] = useState({});
   const [timeSlots, setTimeSlots] = useState([]);
   const [seatsSelected, setSeatsSelected] = useState(0);
   const [theater, setTheater] = useState({});
-  const [user_id, setUser_id] = useState('');
+  const [user_id, setUser_id] = useState("");
   const [userName, setUserName] = useState("");
   const [currentBookedTickets, setCurrentBookedTickets] = useState([]);
+  const [ticketSuccess, setTicketSuccess] = useState(false);
   // useEffect(() => {
 
   //   if (userData.state !== null) {
@@ -63,10 +66,9 @@ function UserDashboard(props) {
         setTheaters(response.data);
       })
       .catch((error) => {});
-      let userData = JSON.parse(localStorage.getItem("userData"));
-      setUser_id(userData._id);
-      setUserName(userData.name);
-
+    let userData = JSON.parse(localStorage.getItem("userData"));
+    setUser_id(userData._id);
+    setUserName(userData.name);
   }, []);
 
   const handleInputChange = (e) => {
@@ -83,50 +85,70 @@ function UserDashboard(props) {
     location: theater.theaterLocation,
   };
   let seats = +seatsSelected;
-  let theaterData = {
-    theaterLocation: theater.theaterLocation,
-    theaterName: theater.theaterName,
-    numberOfSeats: theater.numberOfSeats -seats,
-    pricePerSeat: theater.pricePerSeat,
-    ticketsBooked: theater.ticketsBooked + seats,
+
+  let scheduleData = {
+    date: schedule.date,
+    movieId: schedule.movieId,
+    noOfSeats_schedule: schedule.noOfSeats_schedule - seats,
+    theaterId: schedule.theaterId,
+    timeSlot: schedule.timeSlot,
+    ticketsBooked: schedule.ticketsBooked + seats,
   };
   const handleSubmit = (event) => {
     event.preventDefault();
-    let ticketsData = [];
-    let ticketsResponse = [];
-    let seats = +seatsSelected;
-    if (seats >= 1) {
-      for (var i = 0; i < seats; i++) {
-        let data = {
-          scheduleId: scheduleTime._id,
-          price: calPrice,
-          noOfSeats: +seatsSelected,
-          userId: user_id,
-          seatNumber: theater.ticketsBooked + i + 1,
-          status: "confirmed",
-        };
-        ticketsData.push(data);
+    if (seats > schedule.noOfSeats_schedule) {
+      alert(`We have only ${schedule.noOfSeats_schedule} seats`);
+    } else {
+      let ticketsData = [];
+      let ticketsResponse = [];
+      let seats = +seatsSelected;
+      let bookingReference = uuid();
+      let arr = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
+      if (seats >= 1) {
+        for (var i = 0; i < seats; i++) {
+          let position = schedule.ticketsBooked + i + 1;
+          let data = {
+            scheduleId: scheduleTime._id,
+            price: calPrice,
+            noOfSeats_ticket: +seatsSelected,
+            userId: user_id,
+            seatNumber: schedule.ticketsBooked + i + 1,
+            status: "confirmed",
+            bookingReference: bookingReference,
+            seatPosition: arr[Math.floor(position / 10)] + (position % 10),
+          };
+          ticketsData.push(data);
+        }
       }
-    }
-    if (ticketsData.length > 0) {
-      // for (var i = 0; i < ticketsData.length; i++) {
-      //   axios
-      //     .post("http://localhost:3001/ticket", ticketsData[i])
-      //     .then((response) => {
-      //       if (response.status == 201) {
-      //         ticketsResponse.push(response.data);
-      //         // navigate("/Payment", { state: moviedata });
-      //       }
-      //     })
-      //     .catch((error) => {
-      //       handleClickError();
-      //     });
-      // }
-      // axios
-      //   .put(`http://localhost:3001/theaters/${theater._id}`, theaterData)
-      //   .then((response) => {
-          navigate("/Payment", { state: ticketsData });
-        // });
+      if (ticketsData.length > 0) {
+        for (var i = 0; i < ticketsData.length; i++) {
+          axios
+            .post("http://localhost:3001/ticket", ticketsData[i])
+            .then((response) => {
+              if (response.status == 201) {
+                ticketsResponse.push(response.data);
+                setTicketSuccess(true);
+              }
+            })
+            .catch((error) => {
+              handleClickError();
+              setTicketSuccess(false);
+            });
+        }
+
+        if (setTicketSuccess) {
+          axios
+            .put(
+              `http://localhost:3001/schedules/${schedule._id}`,
+              scheduleData
+            )
+            .then((response) => {
+              navigate("/Payment", {
+                state: { ticketsData, moviedata, scheduleData },
+              });
+            });
+        }
+      }
     }
   };
 
@@ -186,7 +208,6 @@ function UserDashboard(props) {
 
   useEffect(() => {
     if (movieSchedules.length > 0) {
-      debugger;
       localStorage.setItem("movieSchedules", JSON.stringify(movieSchedules));
 
       returnMenu(movieSchedules);
@@ -208,9 +229,8 @@ function UserDashboard(props) {
   };
   const returnMenu = (schedules) => {
     return schedules.map((schedule, index) => (
-      
       <MenuItem key={index} value={schedule}>
-        {schedule?.date.slice(0, schedule?.date.length-14)}
+        {schedule?.date.slice(0, schedule?.date.length - 14)}
       </MenuItem>
     ));
   };
@@ -219,6 +239,7 @@ function UserDashboard(props) {
   };
   const handleChangeTimeSlot = (event) => {
     setTimeSlot(event.target.value);
+    setSchedule(event.target.value);
   };
   return (
     <div>

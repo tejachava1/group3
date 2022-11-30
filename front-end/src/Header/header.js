@@ -52,7 +52,7 @@ export default function Header(props) {
           {/* <MenuIcon onClick={() => navigate("/")} /> */}
         </IconButton>
         <Button className="logout" onClick={() => navigate("/")}>
-          Babilo Movie Booking
+          Online Movie Tickets
         </Button>
         {/* The Typography component applies 
            default font weights and sizes */}
@@ -90,7 +90,7 @@ export default function Header(props) {
           component="div"
           sx={{ flexGrow: 1 }}
         >
-          {`Welcome to Babilo ${username} `}
+          {`Welcome to Online Movie Tickets ${username} `}
         </Typography>
         <Button className="logout" onClick={() => logout()}>
           Logout

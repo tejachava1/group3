@@ -54,7 +54,7 @@ export default function AdminHeader(props) {
           <MenuIcon />
         </IconButton>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          Babilo Movie Booking
+          Online Movie Tickets
         </Typography>
         {/* The Typography component applies 
            default font weights and sizes */}

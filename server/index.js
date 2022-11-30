@@ -8,7 +8,6 @@ const MovieRouter = require("./routes/movie");
 const TheaterRouter = require("./routes/theaters");
 const ScheduleRouter = require("./routes/schedule");
 const TicketRouter = require("./routes/ticket");
-const SeatRouter = require("./routes/seat");
 const Payment = require("./routes/payment");
 app.use(express.json());
 mongoose.connect("mongodb://127.0.0.1:27017/Online_Tickets", {
@@ -40,7 +39,6 @@ app.use(MovieRouter);
 app.use(TheaterRouter);
 app.use(ScheduleRouter);
 app.use(TicketRouter);
-app.use(SeatRouter);
 app.use(Payment);
 
 app.listen(3001, () => {

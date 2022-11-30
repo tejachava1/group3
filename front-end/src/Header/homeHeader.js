@@ -35,7 +35,7 @@ export default function HomeHeader() {
 
           <Button className="logout" onClick={() => navigate('/')}
            >
-           Babilo Movie Booking
+          Online Movie Tickets
           </Button>
           {/* <Button color="inherit">Login</Button> */}
         </Toolbar>

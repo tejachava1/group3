@@ -9,8 +9,9 @@ const TheaterRouter = require("./routes/theaters");
 const ScheduleRouter = require("./routes/schedule");
 const TicketRouter = require("./routes/ticket");
 const SeatRouter = require("./routes/seat");
+const Payment = require("./routes/payment");
 app.use(express.json());
-mongoose.connect("mongodb://127.0.0.1:27017/Movies", {
+mongoose.connect("mongodb://127.0.0.1:27017/Online_Tickets", {
   useNewUrlParser: true,
 });
 app.use(function (req, res, next) {
@@ -29,27 +30,8 @@ app.use(function (req, res, next) {
     "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers,X-Access-Token,XKey,Authorization"
   );
 
-  //  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-
-  // Pass to next layer of middleware
   next();
 });
-// app.get("/", async (req, res) => {
-//     const user = new UserModel({
-//         userId: 1,
-//         name: "Teja",
-//         emailId: "teja.chava4@gmail.com",
-//         password:"lynchkingpin",
-//         phoneNumber:"8919939071"
-//     });
-//     try{
-//         await user.save();
-//         console.log('inserted');
-//         res.send('inserted data')
-//     } catch(err) {
-//         console.log(err);
-//     }
-// })
 
 app.use(express.json());
 app.use(UserRouter);
@@ -59,6 +41,7 @@ app.use(TheaterRouter);
 app.use(ScheduleRouter);
 app.use(TicketRouter);
 app.use(SeatRouter);
+app.use(Payment);
 
 app.listen(3001, () => {
   console.log("server running on port 3001.... ");

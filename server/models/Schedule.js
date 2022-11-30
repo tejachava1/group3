@@ -17,10 +17,16 @@ const ScheduleSchema = new mongoose.Schema({
     ref: "Theater",
   },
   timeSlot: {
-    type : "String",
+    type: "String",
+  },
+  noOfSeats_schedule: {
+    type: Number,
+  },
+  ticketsBooked: {
+    type: Number,
   },
   day: {
-    type : "String",
+    type: "String",
   },
 });
 const Schedule = mongoose.model("Schedule", ScheduleSchema);

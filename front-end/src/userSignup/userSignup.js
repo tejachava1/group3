@@ -4,6 +4,8 @@ import Button from "@mui/material/Button";
 import Axios from "axios";
 import "./userSignup.css";
 import HomeHeader from "../Header/homeHeader";
+import { useNavigate } from "react-router-dom";
+
 function UserSignup() {
   const [values, setValues] = useState({
     name: "",
@@ -11,7 +13,8 @@ function UserSignup() {
     phoneNumber: "",
     password: "",
   });
-  const [errorText, setErrorText] = useState('');
+  const navigate = useNavigate();
+  const [errorText, setErrorText] = useState("");
   const [errorTrue, setErrorTrue] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
 
@@ -26,13 +29,13 @@ function UserSignup() {
       Axios.post("http://localhost:3001/user", values)
         .then((response) => {
           console.log(response);
+          navigate("/userLogin");
         })
         .catch((error) => {
           console.log(error);
         });
-    }
-    else {
-      setErrorText('Password confiramtion does not match');
+    } else {
+      setErrorText("Password confiramtion does not match");
       setErrorTrue(true);
     }
 
@@ -72,7 +75,7 @@ function UserSignup() {
         </div>
         <div>
           <TextField
-           error ={errorTrue}
+            error={errorTrue}
             id="standard-basic"
             label="Confirm Password"
             type="password"

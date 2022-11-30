@@ -18,8 +18,8 @@ import Theater from "./adminDashboard/Theater";
 import Schedule from "./adminDashboard/Schedule";
 import Payment from "./userDashboard/payment";
 import SeatBooking from "./userDashboard/seat";
-import Invoice from "./userDashboard/invoice";
 import MyBookings from "./userDashboard/myBookings";
+import Invoice from "./userDashboard/invoice";
 
 import reportWebVitals from "./reportWebVitals";
 import {
@@ -50,8 +50,8 @@ root.render(
         <Route path="/Schedules" element={<Schedule />} />
         <Route path="/Payment" element={<Payment />} />
         <Route path="/Seatbooking" element={<SeatBooking />} />
-        <Route path="/Invoice" element={<Invoice />} />
         <Route path="/Mybooking" element={<MyBookings />} />
+        <Route path="/Invoice" element={<Invoice />} />
       </Routes>
     </Router>
   </React.StrictMode>

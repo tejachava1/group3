@@ -36,6 +36,7 @@ function AddSchedule(props) {
   const [error, setError] = useState("");
   const [updateTure, setUpdateTrue] = useState(false);
   const [scheduleId, setScheduleId] = useState(0);
+  const [noOfSeats, setNoOfSeats] = useState(0);
   const [timeSlots, setTimeSlots] = useState([
     { id: 1, timeSlot: "11:30 am" },
     { id: 2, timeSlot: "2:10 pm" },
@@ -93,10 +94,14 @@ function AddSchedule(props) {
       movieId: movie,
       theaterId: theater,
       timeSlot: timeSlot,
-      seatAvailable: seats,
+      seatAvailable: noOfSeats,
+      noOfSeats_schedule: noOfSeats,
       date: date,
+      ticketsBooked: 0,
     };
     event.preventDefault();
+
+    console.log(schedule);
 
     Axios.post("http://localhost:3001/schedules", schedule)
       .then((response) => {
@@ -127,7 +132,8 @@ function AddSchedule(props) {
     setTimeSlot(event.target.value);
   };
   const handleChangeTheater = (event) => {
-    setTheater(event.target.value);
+    setTheater(event.target.value._id);
+    setNoOfSeats(event.target.value.numberOfSeats);
   };
   const handleInputChange = (event) => {
     setSeats(event.target.value);
@@ -229,7 +235,7 @@ function AddSchedule(props) {
                     <Select
                       labelId="theater-label"
                       id="theater_id"
-                      value={theater}
+                      value={theater._id}
                       onChange={handleChangeTheater}
                       label="Theater"
                     >
@@ -238,7 +244,7 @@ function AddSchedule(props) {
                       </MenuItem>
 
                       {theaters.map((theater, index) => (
-                        <MenuItem key={index} value={theater._id}>
+                        <MenuItem key={index} value={theater}>
                           {" "}
                           {theater.theaterName}- {theater.theaterLocation}
                         </MenuItem>

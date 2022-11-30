@@ -12,9 +12,6 @@ const TheaterSchema = new mongoose.Schema({
   pricePerSeat: {
     type: Number,
   },
-  ticketsBooked: {
-    type: Number,
-  },
 });
 
 const Theater = mongoose.model("Theaters", TheaterSchema);

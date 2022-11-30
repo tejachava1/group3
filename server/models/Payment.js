@@ -2,13 +2,16 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const PaymentSchema = new mongoose.Schema({
-  
- Id: {
-  type: Number,
- },
+  Id: {
+    type: Number,
+  },
   userId: {
     type: Schema.Types.ObjectId,
     ref: "Users",
+  },
+  scheduleId: {
+    type: Schema.Types.ObjectId,
+    ref: "Schedule",
   },
   totalAmount: {
     type: Number,
@@ -16,10 +19,9 @@ const PaymentSchema = new mongoose.Schema({
   refundedAmount: {
     type: Number,
   },
-  date: {
-  type: Date,
+  bookingReference: {
+    type: String,
   },
-
 });
 const Payment = mongoose.model("Payment", PaymentSchema);
 module.exports = Payment;
